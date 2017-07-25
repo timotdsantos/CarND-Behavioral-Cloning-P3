@@ -63,10 +63,13 @@ Observing the behavior of the initial models, the car seemed to not be able to g
 ### Data Augmentation
 
 #### Multiple-camera
+The default data set and the simulator output contains three cameras (left, right, center). To be able to use the left and right cameras, the current steering angle is biased by 0.5 left or right when using the left and right images.
 
 #### Additional Data from Simulator
+Another approach to add more data was to flip the images and multiply the corresponding steering angle by -1. The images where the steering angle is zero were not all selected and/or flipped.
 
 ### Final Model Architecture
+The model selected was patterned after the NVIDIA architecture.
 
 ### Training and Validation
 
