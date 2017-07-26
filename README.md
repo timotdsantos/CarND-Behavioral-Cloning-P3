@@ -2,6 +2,9 @@
 
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
+[//]: # (Image References)
+
+[image1]: ./examples/NVIDIA_CNN.png "NVIDIA CNN Model Architecture" 
 Overview
 ---
 This contains the discussion of my approach to the Behavioral Cloning Project.
@@ -70,10 +73,10 @@ Another approach to add more data was to flip the images and multiply the corres
 
 ### Final Model Architecture
 The model selected was patterned after the NVIDIA architecture.
+![alt text][image1]
 
 ### Training and Validation
 
-### Training and Validation
 
 
 ```sh
