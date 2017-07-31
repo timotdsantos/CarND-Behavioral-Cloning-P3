@@ -6,7 +6,10 @@
 
 [image1]: ./examples/NVIDIA_CNN.png "NVIDIA CNN Model Architecture" 
 [image2]: ./examples/recover_right.jpg "Recover Data from Right" 
-[image3]: ./examples/proc_shade.jpg "Processed Data to introduce shadow" 
+[image3]: ./examples/proc_shade.png "Processed Data to introduce shadow" 
+[sample_l]: ./examples/sample_l.jpg "Left Camera Image" 
+[sample_r]: ./examples/sample_r.jpg "Right Camera Image" 
+[sample_c]: ./examples/sample_c.jpg "Center Camera Image" 
 Overview
 ---
 This contains the discussion of my approach to the Behavioral Cloning Project.
@@ -69,7 +72,7 @@ Here is an example of a recovery where the car is coming from the right lane.
 
 
 
-### Data Augmentation
+### Data Processing
 
 #### Artificial Shadow Post-processing
 Initially, sections of the track with various lighting and shading conditions became challenging spots in autonomous mode. My initial solution was to collect training data with similar shadow/shading conditions, but a more robust approach was chosen. From the training data, randomly selected images were post-processed to include different shadow condition. By making random portions of the image vary in shade, we are able to emulate the varying shadow condition that's usual in normal driving condition.
@@ -81,6 +84,13 @@ Here's an example of the post-processed image with the artificial shadow post-pr
 #### Multiple-camera
 The default data set and the simulator output contains three cameras (left, right, center). To be able to use the left and right cameras, the current steering angle is biased by 0.25 left or right when using the right and left images correspondingly. By doing this, we're practically getting 3 times the amount of data.
 
+Here's the Left, Center, and Right camera images:
+
+![alt text][sample_l]
+![alt text][sample_c]
+![alt text][sample_r]
+
+
 #### Additional Data from Simulator
 Another approach to add more data was to flip the images and multiply the corresponding steering angle by -1. The images where the steering angle is zero were not all selected and/or flipped.
 
@@ -90,7 +100,7 @@ The distribution of angles were explored and I decided to randomly sample from t
 ### Final Model Architecture
 The process of designing the architecture was iterative. I started implementing from basic network and built up to more complex networks. As the network became more complex, the training time per epoch increases, but it gained validation accuracy improvement.
 The Final model selected was patterned after the NVIDIA architecture shown below.
-
+ 
 ![alt text][image1]
 
 ### Training and Validation
