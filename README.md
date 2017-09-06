@@ -41,7 +41,7 @@ The enviroment can be created with CarND Term1 Starter Kit. Click [here](https:/
 
 The simulator can be downloaded from the classroom. 
 
-Project Workflow
+### Project Objectives
 ---
 
 The goals / steps of this project are the following:
@@ -52,14 +52,30 @@ The goals / steps of this project are the following:
 
 ## Model Architecture and Training Strategy
 
-The project consists of three sections:
+### Solution Design Approach
+
+The project involved an iterative design process that can be further broken down to the following sections:
 - Data Collection
 - Data Processing and Augmentation
 - Model Development
+- Training and Evaluation
+- Simulation
 
+The overall strategy for deriving the model architecture was to iterate through the process of trying out various model configuration, training data, and processing while analyzing the performance through validation and simulation.
 
-### Data Collection and Augmentation
-Training data was chosen to keep the vehicle driving on the road. The various iterations of data collection and augmentation are discussed next.
+#### Data Collection
+Training data was chosen to keep the vehicle driving on the road.
+#### Data Processing and Augmentation
+The data collected was augmented or enhanced by performing image processing techniques on the training data so that the model can learn different conditions that may be present in actual/real-world settings.
+#### Model Development
+Various models were developed starting from basic ones(single layered, lenet) up to more complex convolutional networks (NVIDIA-CNN).
+#### Training and evaluation
+Training data was chosen to keep the vehicle driving on the road.
+#### Simulation
+Training data was chosen to keep the vehicle driving on the road.
+
+### Data Collection 
+The various iterations of data collection and augmentation are discussed next.
 
 #### Default Data set
 The data initially used was the one included in the project repository. In the initial iterations of the development, the included data was sufficient to be able to drive the car in the parts of the track with minimal curves.
@@ -99,7 +115,7 @@ I used an adam optimizer so that manually training the learning rate wasn't nece
 
 ### Final Model Architecture
 
-Multiple models were tried, starting from simple architectures (single layer, lenet) to more complex ones(NVIDIA CNN). I iterated a single default epoch and noticed the improvement on the validation accuracy as the complexity increased. The model finally selected was patterned after the NVIDIA architecture.
+The model finally selected was patterned after the [NVIDIA architecture](http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf).
 ![alt text][image1]
 
 ### Training and Validation
