@@ -34,7 +34,7 @@ The Project
 ---
 
 For the project, the following files are included in this repository: 
-* [model.py](https://github.com/timotdsantos/CarND-Behavioral-Cloning-P3/blob/master/model.py) contains the code to create and train the model. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+* [model.py](https://github.com/timotdsantos/CarND-Behavioral-Cloning-P3/blob/master/model.py)/[Behavioral_Cloning_Final.ipynb](https://github.com/timotdsantos/CarND-Behavioral-Cloning-P3/blob/master/Behavior_Cloning_Final.ipynb) contains the code to create and train the model. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 * [model.h5](https://github.com/timotdsantos/CarND-Behavioral-Cloning-P3/blob/master/model.h5) is the trained Keras model
 
 * [video.mp4](https://github.com/timotdsantos/CarND-Behavioral-Cloning-P3/blob/master/video.mp4) is a video recording of the vehicle driving autonomously around the track for at least one full lap
@@ -191,3 +191,6 @@ In order to fine-tune the model performance on the simulator track, the design i
 #### Simulation video
 
 It's been noted the simulator might perform differently based on the hardware. The simulation of the car running around the track using the trained model comes with this repository and could be accessed [here](https://github.com/timotdsantos/CarND-Behavioral-Cloning-P3/blob/master/video.mp4).
+
+[![Watch the video](https://github.com/timotdsantos/CarND-Behavioral-Cloning-P3/blob/master/video.mp4)](https://github.com/timotdsantos/CarND-Behavioral-Cloning-P3/blob/master/video.mp4)
+
