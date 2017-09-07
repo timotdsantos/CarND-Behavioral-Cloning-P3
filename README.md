@@ -5,6 +5,9 @@
 [//]: # (Image References)
 [image1]: ./examples/NVIDIA_CNN.png "NVIDIA CNN Model Architecture" 
 [image2]: ./examples/proc_shade.png "Processed Image to introduce difference in shade" 
+[sample_c]: ./examples/sample_c.jpg "Center Image" 
+[sample_l]: ./examples/sample_l.jpg "Left Image" 
+[sample_r]: ./examples/sample_r.jpg "Right Image" 
 
 
 Overview
@@ -13,7 +16,16 @@ This contains the discussion of my approach to the Behavioral Cloning Project.
 
 In this project, I've learned about using deep neural networks and convolutional neural networks to clone driving behavior. Here, I trained, validated and tested models using Keras. The model's output is steering angle to an autonomous vehicle, based on images captured by the camera.
 
-The provided simulator was used to train and test the model. You can steer a car around a track for data collection and the image data and steering angles were used to train a neural network and then use this model to drive the car autonomously around the track.
+The provided simulator was used to train and test the model. You can steer a car around a track for data collection and the image data and steering angles were used to train a neural network. The model is integrated with the simulator so that the model can be used to drive the car autonomously around the track.
+
+### Project Objectives
+---
+
+The goals / steps of this project are the following:
+* Use the simulator to collect data of good driving behavior 
+* Design, train and validate a model that predicts a steering angle from image data
+* Use the model to drive the vehicle autonomously around the first track in the simulator. The vehicle should remain on the road for an entire loop around the track.
+
 
 The Project
 ---
@@ -41,14 +53,6 @@ The enviroment can be created with CarND Term1 Starter Kit. Click [here](https:/
 
 The simulator can be downloaded from the classroom. 
 
-### Project Objectives
----
-
-The goals / steps of this project are the following:
-* Use the simulator to collect data of good driving behavior 
-* Design, train and validate a model that predicts a steering angle from image data
-* Use the model to drive the vehicle autonomously around the first track in the simulator. The vehicle should remain on the road for an entire loop around the track.
-
 
 ## Model Architecture and Training Strategy
 
@@ -61,7 +65,7 @@ The project involved an iterative design process that can be further broken down
 - Training and Evaluation
 - Simulation
 
-The overall strategy for deriving the model architecture was to iterate through the process of trying out various model configuration, training data, and processing while analyzing the performance through validation and simulation.
+The overall strategy for deriving the model architecture was to iterate through the process of trying out various model configuration, training data, and processing steps while analyzing the performance through validation and simulation.
 
 #### Data Collection
 Training data was chosen to keep the vehicle driving on the road.
@@ -72,10 +76,9 @@ Various models were developed starting from basic ones(single layered, lenet) up
 #### Training and evaluation
 Training data was chosen to keep the vehicle driving on the road.
 #### Simulation
-Training data was chosen to keep the vehicle driving on the road.
+Using the model that was trained and tuned to produce good validation performance metrics, the model is tested on Track 1 if the car can succesfuly drive around the track.
 
 ### Data Collection 
-The various iterations of data collection and augmentation are discussed next.
 
 #### Default Data set
 The data initially used was the one included in the project repository. In the initial iterations of the development, the included data was sufficient to be able to drive the car in the parts of the track with minimal curves.
@@ -88,10 +91,16 @@ Observing the behavior of the initial models, the car seemed to not be able to g
 ### Data Processing and Augmentation
 
 #### Multiple-camera
-The default data set and the simulator output contains three cameras (left, right, center). To be able to use the left and right cameras, the current steering angle is biased by 0.5 left or right when using the left and right images.
+The default data set and the simulator output contains three cameras (left, right, center). To be able to use the left and right cameras, the current steering angle is biased by +0.25 for left camera image or -0.25 for right camera image.
+<p align="center">
+  <img width="240" height="160" src="./examples/sample_l.jpg"><img width="240" height="160" src="./examples/sample_c.jpg"><img width="240" height="160" src="./examples/sample_r.jpg">
+</p>
+
+Adding 0.25 on the left image causes the car to have a steering angle adjust to the right, while subtracting 0.25 on the right image causes the car to move to the left.
 
 #### Additional Data from Simulator
 Another approach to add more data was to flip the images and multiply the corresponding steering angle by -1. The images where the steering angle is zero were not all selected and/or flipped.
+
 
 #### Additional Processing
 To be able to handle various lighting conditions, random shading were applied on the training data. 
@@ -106,33 +115,38 @@ Part of the image includes the bumper of the car and the sky. Additional croppin
 #### Final Training Data Set
 After the collection and augmentation, I had 16,072 number of data points. I finally randomly shuffled the data set and put 80%(12857) on the training set, and 20%(3215) of the data into a validation set.
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. 
+I used this data for training the model. The validation set was used to determine if the model was overfitting or underfitting. 
 
-The ideal number of epochs was 3 as evidenced by the lack of significant improvement  of the validation loss for epochs 4 and above. 
+### Model Design Process
+I started with just a single fully-connected layer in order to setup the framework for the iterations. Multiple models were implemented starting from simple architectures that were covered in the course materials (single layer, lenet) to more complex ones(NVIDIA CNN). 
 
-I used an adam optimizer so that manually training the learning rate wasn't necessary.
-
+I iterated a single default epoch and noticed the improvement on the validation accuracy and increased training time as the complexity increased.
 
 ### Final Model Architecture
 
-The model finally selected was patterned after the [NVIDIA architecture](http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf).
+The model finally selected was patterned after the [NVIDIA architecture](http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf). 
+
 ![alt text][image1]
+
+The selection of the NVIDIA CNN was because the architecture had a good balance of complexity (not too complex network, doesn't take too long to train) and performance (performs well comopared with the other architecture). The decision to choose NVIDIA CNN was also guided by the fact that the architecture was particularly designed to do the task at hand and has undergone experimental evaluation to identify the optimal layer configurations.
+
+At the beginning, there's a normalization layer which scales the values to the range -0.5 and 0.5.
+
+The five convolutional layers were designed to perform feature extraction as described in the NVIDIA paper. The three fully-connected layers are meant to finally control the steering angle.
+
+In terms of optimizing the model parameters, I just used an adam optimizer so that manually training the learning rate wasn't necessary.
 
 ### Training and Validation
 
+In selecting which model architecture to use, I iterated using 1-3 epochs of training and compared the validation loss, wherein NVIDIA CNN was one of the well performing models.
 
+The ideal number of epochs for the selected model (NVIDIA-CNN) was 3 as evidenced by the lack of significant improvement  of the validation loss for epochs 4 and above. The models were trained with batch_size equal to 256.
 
-```sh
-python video.py run1
-```
+The final litmus test of the trained model is by running the simulator in autonomous mode using the trained model.
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network based on the NVIDIA architecture.
+#### Fine-Tuning
+In order to fine-tune the model performance on the simulator track, the design iteration is repeated with different data processing and data augmentation steps as discussed in the previous section.  
 
-Here is a visualization of the architecture.
+#### Simulation video
 
-
-
-#### Why create a video
-
-1. It's been noted the simulator might perform differently based on the hardware. So if your model drives succesfully on your machine it might not on another machine (your reviewer). Saving a video is a solid backup in case this happens.
-2. You could slightly alter the code in `drive.py` and/or `video.py` to create a video of what your model sees after the image is processed (may be helpful for debugging).
+It's been noted the simulator might perform differently based on the hardware. The simulation of the car running around the track using the trained model comes with this repository and could be accessed [here](https://github.com/timotdsantos/CarND-Behavioral-Cloning-P3/blob/master/run1_track1.mp4).
