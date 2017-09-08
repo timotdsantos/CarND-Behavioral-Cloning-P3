@@ -83,3 +83,46 @@ In terms of optimizing the model parameters, I used an adam optimizer so that ma
 ```
 model.compile(loss='mse', optimizer='adam')```
 
+
+The model was trained on 6 EPOCHS and with batch_size equal to 256.
+ 
+
+### 4. Appropriate training data
+
+The training data included in the udacity project repository was initially used. I collected other driving conditions like lane recovery combined with other data processing and data augmentation steps as discussed in the next section. 
+
+
+## Model Architecture and Training Strategy
+
+### 1. Solution Design Approach
+
+The project involved an iterative design process that can be further broken down to the following sections:
+- Data Collection
+- Data Processing and Augmentation
+- Model Development
+- Training and Evaluation
+- Simulation
+
+The overall strategy for deriving the model architecture was to iterate through the process of trying out various model configuration, training data, and processing steps while analyzing the performance through validation and simulation.
+
+#### Data Collection
+Driving data around the track is collected, additional data is collected for various driving conditions.
+#### Data Processing and Augmentation
+The data collected was augmented or enhanced by performing image processing techniques on the training data so that the model can learn different conditions that may be present in actual/real-world settings without having to collect data with those real-world conditions.
+#### Model Development
+Various models were developed starting from basic ones(single layered, lenet) up to more complex convolutional networks (NVIDIA-CNN).
+#### Training and evaluation
+The collected data is split between training and validation sets. The model training and validation errors are calculated. This is the step where we decide whether to perform more tuning, or select a different architecture.
+#### Simulation
+Using the model that was trained and tuned to produce good validation performance metrics, the model is tested on Track 1 if the car can succesfuly drive around the track. This is the final litmus test for the model's performance, it also is useful to know what kind of additional training data needs to get collected.
+
+
+### 2. Final Model Architecture
+
+The model finally selected was patterned after the [NVIDIA architecture](http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf). 
+
+![alt text][image1]
+
+The selection of the NVIDIA CNN was because the architecture had a good balance of complexity (not too complex network, doesn't take too long to train) and performance (performs well comopared with the other architecture). The decision to choose NVIDIA CNN was also guided by the fact that the architecture was particularly designed to do the task at hand and has undergone experimental evaluation to identify the optimal layer configurations.
+
+At the beginning, there's a normalization layer which scales the pixel values to the range -0.5 and 0.5.
