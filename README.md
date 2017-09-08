@@ -81,7 +81,8 @@ The final litmus test of the trained model is by running the simulator in autono
 In terms of optimizing the model parameters, I used an adam optimizer so that manually training the learning rate wasn't necessary. 
 
 ```
-model.compile(loss='mse', optimizer='adam')```
+model.compile(loss='mse', optimizer='adam')
+```
 
 
 The model was trained on 6 EPOCHS and with batch_size equal to 256.
