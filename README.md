@@ -127,3 +127,93 @@ The model finally selected was patterned after the [NVIDIA architecture](http://
 The selection of the NVIDIA CNN was because the architecture had a good balance of complexity (not too complex network, doesn't take too long to train) and performance (performs well comopared with the other architecture). The decision to choose NVIDIA CNN was also guided by the fact that the architecture was particularly designed to do the task at hand and has undergone experimental evaluation to identify the optimal layer configurations.
 
 At the beginning, there's a normalization layer which scales the pixel values to the range -0.5 and 0.5.
+
+
+
+
+```
+model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))
+```
+
+
+The five convolutional layers were designed to perform feature extraction as described in the NVIDIA paper. 
+
+```
+model.add(Convolution2D(24, 5, 5, activation = 'relu', subsample=(2, 2) ))
+model.add(Convolution2D(36, 5, 5, activation = 'relu', subsample=(2, 2) ))
+model.add(Convolution2D(48, 5, 5, activation = 'relu', subsample=(2, 2) ))
+model.add(Convolution2D(64, 3, 3, activation = 'relu' ))
+model.add(Convolution2D(64, 3, 3))
+```
+
+The three fully-connected layers are meant to finally control the steering angle.
+
+```
+model.add(Flatten())
+model.add(Dense(1162))
+model.add(Dense(100))
+model.add(Dense(50))
+model.add(Dense(10))
+model.add(Dense(1))
+```
+
+### 3. Creation of the Training Set & Training Process
+
+### Data Collection 
+
+#### Default Data set
+The data initially used was the one included in the project repository. In the initial iterations of the development, the included data was sufficient to be able to drive the car in the parts of the track with minimal curves.
+
+Initially, there were around 8000+ images used, using only the 'center' camera of the car.
+
+The histogram of the steering angles is shown here:
+
+![alt_text][hist_all]
+
+The amount of neutral steering angle (0) will bias training the model, hence, the need to undersample the neutral angles or augment the less-represented angles.
+
+#### Recovery Data Set
+Observing the behavior of the initial models, the car seemed to not be able to get back to the middle of the road when near the edge. To solve this, I recorded multiple occasions where the car is controlled to go back to the middle of the lane.
+
+### Data Processing and Augmentation
+
+#### Multiple-camera
+The default data set and the simulator output contains three cameras (left, right, center). To be able to use the left and right cameras, the current steering angle is biased by +0.25 for left camera image or -0.25 for right camera image.
+<p align="center">
+  <img width="240" height="160" src="./examples/sample_l.jpg"><img width="240" height="160" src="./examples/sample_c.jpg"><img width="240" height="160" src="./examples/sample_r.jpg">
+</p>
+
+Adding 0.25 on the left image causes the car to have a steering angle adjust to the right, while subtracting 0.25 on the right image causes the car to move to the left.
+
+#### Additional Data from Simulator
+Another approach to add more data was to flip the images and multiply the corresponding steering angle by -1. The images where the steering angle is zero were not all selected and/or flipped.
+
+
+#### Additional Processing
+To be able to handle various lighting conditions, random shading were applied on the training data. 
+
+![alt text][image2]
+
+Part of the image includes the bumper of the car and the sky. Additional cropping using the function Cropping2D was used to retain the region of interest to within the road. 
+* 70 pixels from the top (the sky)
+* 25 pixels from the bottom (car)
+
+
+#### Final Training Data Set
+After the collection and augmentation, I had 34000+ number of data points. I finally randomly shuffled the data set and put 80%(12857) on the training set, and 20%(3215) of the data into a validation set.
+
+I used this data for training the model. The validation set was used to determine if the model was overfitting or underfitting. 
+
+After all the data augmentation and sampling, this is the histogram of the final training data:
+
+![alt_text][hist_augmented]
+
+
+
+#### Simulation video
+
+It's been noted the simulator might perform differently based on the hardware. The simulation of the car running around the track using the trained model comes with this repository and could be accessed [here](https://github.com/timotdsantos/CarND-Behavioral-Cloning-P3/blob/master/video.mp4).
+
+[![Download the video](https://github.com/timotdsantos/CarND-Behavioral-Cloning-P3/blob/master/video.mp4)](https://github.com/timotdsantos/CarND-Behavioral-Cloning-P3/blob/master/video.mp4)
+
+
