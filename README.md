@@ -132,8 +132,7 @@ At the beginning, there's a normalization layer which scales the pixel values to
 
 The five convolutional layers were designed to perform feature extraction as described in the NVIDIA paper. 
 
-```
-model.add(Convolution2D(24, 5, 5, activation = 'relu', subsample=(2, 2) ))
+```model.add(Convolution2D(24, 5, 5, activation = 'relu', subsample=(2, 2) ))
 model.add(Convolution2D(36, 5, 5, activation = 'relu', subsample=(2, 2) ))
 model.add(Convolution2D(48, 5, 5, activation = 'relu', subsample=(2, 2) ))
 model.add(Convolution2D(64, 3, 3, activation = 'relu' ))
@@ -141,8 +140,7 @@ model.add(Convolution2D(64, 3, 3))```
 
 The three fully-connected layers are meant to finally control the steering angle.
 
-```
-model.add(Flatten())
+```model.add(Flatten())
 model.add(Dense(1162))
 model.add(Dense(100))
 model.add(Dense(50))
