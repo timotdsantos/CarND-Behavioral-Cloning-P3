@@ -80,8 +80,7 @@ The final litmus test of the trained model is by running the simulator in autono
 
 In terms of optimizing the model parameters, I used an adam optimizer so that manually training the learning rate wasn't necessary. 
 
-```
-model.compile(loss='mse', optimizer='adam')```
+```model.compile(loss='mse', optimizer='adam')```
 
 
 The model was trained on 6 EPOCHS and with batch_size equal to 256.
@@ -127,8 +126,8 @@ The selection of the NVIDIA CNN was because the architecture had a good balance 
 
 At the beginning, there's a normalization layer which scales the pixel values to the range -0.5 and 0.5.
 
-```
-model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))```
+
+```model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160,320,3)))```
 
 
 The five convolutional layers were designed to perform feature extraction as described in the NVIDIA paper. 
